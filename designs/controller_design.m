@@ -21,7 +21,7 @@ D = 0;
 
 % LQR
 Q = diag([1.6 5 0 0]);
-R = 0.028;
+R = 0.0028;
 [K, S, EIG] = lqr(A, B, Q, R);
 display(K);
 display(EIG);
