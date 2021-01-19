@@ -18,7 +18,7 @@ init_printing(use_unicode=True)
 q1, q2 = dynamicsymbols('q1 q2')
 q1d, q2d = dynamicsymbols('q1 q2', 1)
 q1d2, q2d2 = dynamicsymbols('q1 q2', 2)
-l1, l2, m1, m2, g, pwm = symbols('l1, l2, m1, m2, g, pwm')
+l1, l2, m1, m2, g, K, R, V = symbols('l1, l2, m1, m2, g, K, R, V')
 
 
 half = (1/2)
@@ -48,7 +48,9 @@ L1 = simplify(diff(diff(L, q1d), 't') - diff(L, q1))
 L2 = simplify(diff(diff(L, q2d), 't') - diff(L, q2))
 # pprint(L2)
 
-lagrange_solution = simplify(solve([L1 - pwm, L2], (q1d2, q2d2)))
+motor_torque = K * V / R - (K ** 2) *  q1d / R
+
+lagrange_solution = simplify(solve([L1 -  motor_torque, L2], (q1d2, q2d2)))
 
 
 """ 
@@ -97,21 +99,22 @@ A = Matrix ([
   [A41, A42, A43, A44]
 ])
 
-A = A.subs({q1: 0, q2: 0, q1d: 0, q2d: 0, pwm: 0})
-print(simplify(A))
+A = simplify(A.subs({q1: 0, q2: 0, q1d: 0, q2d: 0, V: 0}))
+print(A)
 add_space()
 
-B1 = diff(f1, pwm)
-B2 = diff(f2, pwm)
-B3 = diff(f3, pwm)
-B4 = diff(f4, pwm)
+B1 = diff(f1, V)
+B2 = diff(f2, V)
+B3 = diff(f3, V)
+B4 = diff(f4, V)
 
 B = Matrix ([
   B1, B2, B3, B4
 ])
 
-B = B.subs({q1: 0, q2: 0, q1d: 0, q2d: 0, pwm: 0})
+
+B = simplify(B.subs({q1: 0, q2: 0, q1d: 0, q2d: 0, V: 0}))
 
 
 add_space()
-print(simplify(B))
+print(B)
