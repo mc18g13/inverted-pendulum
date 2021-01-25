@@ -1,5 +1,5 @@
 #include "PIDController.h"
-
+#include "Arduino.h"
 PIDController::PIDController(
   const float32_t proportionalConstant, 
   const float32_t integralConstant,
@@ -22,7 +22,8 @@ void PIDController::update(float32_t setPoint, float32_t actual) {
   m_proportional = error * m_proportionalConstant;
   m_currentIntegral += m_integralConstant * error;
   m_derivative = m_derivativeConstant * (error - m_previousError);
-
+  PRINT_WITH_NAME("integral", m_currentIntegral);
+  PRINT_WITH_NAME("derivate", m_derivative);
   m_previousError = error;
   
   auto checkAndLimitValue = [](float32_t &value, float32_t limit) {

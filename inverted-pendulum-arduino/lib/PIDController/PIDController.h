@@ -1,6 +1,7 @@
 #ifndef PID_CONTROLLER
 #define PID_CONTROLLER
 #include "arm_math.h"
+#define PRINT_WITH_NAME(NAME, X) Serial.print(NAME); Serial.print(" "); Serial.println(X);
 
 class PIDController {
 public:

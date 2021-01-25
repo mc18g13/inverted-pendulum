@@ -17,19 +17,38 @@ B4 = 36.0*K/(8.0*R*l1*l2*m1 + 6.0*R*l1*l2*m2);
 B = [0; 0; B3; B4];
 
 % C matrix
-C = eye(4);
+C = [1,0,0,0; 0,1,0,0; 0,0,1,0; 0,0,0,1];
 
 % D matrix
 D = 0;
 
 % LQR
-Q = diag([6 1.5 0 0]);
+Q = diag([1 10 0 0]);
 R = 0.001;
 [K, S, EIG] = lqr(A, B, Q, R);
 display(K);
 display(EIG);
 
+
+Co = ctrb(A,B);
+unco = length(A) - rank(Co);
+display(unco);
+
+
+Fs = 5;
+dt = 1/Fs;
+N = 50;
+t = dt*(0:N-1);
+u = [1 zeros(1,N-1)];
+[b,a] = ss2tf(A,B,C,D);
+display(b);
+display(a);
+yt = filter(b,a,u);
+stem(t,yt,'filled')
+xlabel('t')
+
 % system simulation
 sys = ss(A,B,C,D);
 sys_feedback = feedback(sys,K);
+display(sys_feedback)
 step(sys_feedback);
