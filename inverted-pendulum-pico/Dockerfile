@@ -1,4 +1,7 @@
 FROM debian
 
+COPY scripts/install_build_deps.sh .
+
 RUN apt-get update
-RUN apt-get install -y git cmake gcc-arm-none-eabi gcc g++ python3
+RUN chmod +x install_build_deps.sh
+RUN ./install_build_deps.sh
