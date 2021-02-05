@@ -1,24 +1,23 @@
 version: 2.1
+
+references:
+  workspace_root: &workspace_root
+    /tmp/workspace
+  attach_workspace: &attach_workspace
+    attach_workspace:
+      at: *workspace_root
+
 jobs:
-  checkout-to-workspace:
-    docker:
-      - image: mc18g13/rotary-inverted-pendulum-pico-build:latest
-    steps:
-      - checkout
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
   build-pico:
     docker:
       - image: mc18g13/rotary-inverted-pendulum-pico-build:latest
-    working_directory: ~/inverted-pendulum-pico
     steps:
-      - attach_workspace:
-          at: ~/
+      - *attach_workspace
+      - checkout
       - run:
           name: compile
           command: |
+            cd inverted-pendulum-pico
             sh ./scripts/build.sh
 workflows:
   checkout:
