@@ -22,5 +22,4 @@ jobs:
 workflows:
   checkout:
     jobs:
-      - checkout-to-workspace
       - build-pico
