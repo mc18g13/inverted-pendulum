@@ -1,4 +1,4 @@
-IMAGE_NAME = rotary-inverted-pendulum-pico
+IMAGE_NAME = rotary-inverted-pendulum-pico-build
 IMAGE_VERSION = latest
 IMAGE_USER = mc18g13
 IMAGE_TAG = $(IMAGE_USER)/$(IMAGE_NAME):$(IMAGE_VERSION)
