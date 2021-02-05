@@ -13,6 +13,10 @@ docker-build:: ## Build the docker image
 	@docker build \
 		-t $(IMAGE_TAG) $(WORKING_DIR)
 
+docker-push:: ## push the docker image
+	@echo Pushing $(IMAGE_TAG)
+	@docker push $(IMAGE_TAG)
+
 build:: ## Build the firmare
 	@docker run -t \
 	-v $(WORKING_DIR):/$(DOCKER_DIR) \
@@ -25,8 +29,11 @@ build-full: docker-build build ## Setup the docker image and build the firmware
 upload:
 	./scripts/upload.sh
 
-clean: 
+clean:
 	rm -rf cmake-build
+
+usb:
+	./scripts/usb_output.sh
 
 # A help target including self-documenting targets (see the awk statement)
 define HELP_TEXT

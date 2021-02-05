@@ -1,1 +1,1 @@
-apt-get install -y git cmake gcc-arm-none-eabi gcc g++ python3
+apt-get install -y cmake gcc-arm-none-eabi gcc g++ python-dev python3-dev
