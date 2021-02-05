@@ -8,12 +8,15 @@ DOCKER_DIR :=$(IMAGE_NAME)
 
 .DEFAULT_GOAL := build-full
 
-docker-build:: ## Build the docker image
+check-docker:: ## Target to check if docker is installed
+	$(if $(shell which docker),,$(error "Docker needs to be installed to run this makefile"))
+
+docker-build:: check-docker ## Build the docker image
 	@echo Building $(IMAGE_TAG)
 	@docker build \
 		-t $(IMAGE_TAG) $(WORKING_DIR)
 
-docker-push:: ## push the docker image
+docker-push:: check-docker ## push the docker image
 	@echo Pushing $(IMAGE_TAG)
 	@docker push $(IMAGE_TAG)
 
