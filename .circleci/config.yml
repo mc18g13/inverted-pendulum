@@ -10,12 +10,12 @@ jobs:
           paths:
             - .
   build-pico:
-    - attach_workspace:
-      at: ~/
     docker:
       - image: mc18g13/rotary-inverted-pendulum-pico-build:latest
     working_directory: ~/inverted-pendulum-pico
     steps:
+      - attach_workspace:
+          at: ~/
       - run:
           name: compile
           command: |
