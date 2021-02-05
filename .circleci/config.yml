@@ -18,6 +18,7 @@ jobs:
           name: compile
           command: |
             cd inverted-pendulum-pico
+            git submodule update --init --recursive
             sh ./scripts/build.sh
 workflows:
   checkout:
