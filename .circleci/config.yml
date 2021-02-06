@@ -15,7 +15,7 @@ jobs:
       - *attach_workspace
       - checkout
       - run:
-          name: compile
+          name: Compile pico project
           command: |
             cd rotary-inverted-pendulum-pico
             git submodule update --init
