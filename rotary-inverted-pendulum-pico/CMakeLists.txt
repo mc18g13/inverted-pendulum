@@ -16,6 +16,11 @@ add_executable(rotary_inverted_pendulum
   main.c
 )
 
+target_compile_options(
+  rotary_inverted_pendulum PRIVATE
+  -Wall
+)
+
 pico_set_program_name(rotary_inverted_pendulum "rotary_inverted_pendulum")
 pico_set_program_version(rotary_inverted_pendulum "0.1")
 
