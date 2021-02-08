@@ -8,13 +8,24 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
 include(pico-sdk/pico_sdk_init.cmake)
-project(my_project)
+project(rotary_inverted_pendulum)
 
 pico_sdk_init()
 
+file(GLOB_RECURSE LIB_SOURCE
+  lib/*.c*
+)
+
 add_executable(rotary_inverted_pendulum
   main.c
+  lib/motor_driver/motor_driver.c
+  lib/arm_encoder/arm_encoder.c
 )
+
+target_include_directories(
+  rotary_inverted_pendulum PRIVATE 
+  lib/motor_driver 
+  lib/arm_encoder)
 
 target_compile_options(
   rotary_inverted_pendulum PRIVATE
@@ -30,4 +41,8 @@ pico_add_extra_outputs(rotary_inverted_pendulum)
 pico_enable_stdio_uart(rotary_inverted_pendulum 0)
 pico_enable_stdio_usb(rotary_inverted_pendulum 1)
 
-target_link_libraries(rotary_inverted_pendulum pico_stdlib hardware_i2c)
+target_link_libraries(
+  rotary_inverted_pendulum
+  pico_stdlib
+  hardware_i2c
+)

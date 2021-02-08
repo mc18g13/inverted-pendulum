@@ -25,7 +25,13 @@ build:: ## Build the firmare
 	-v $(WORKING_DIR):/$(DOCKER_DIR) \
 	--user "$(id -u):$(id -g)" \
 	-w /$(DOCKER_DIR) $(IMAGE_TAG) bash -C \
-	./scripts/build.sh
+	./scripts/build.sh --color=auto
+
+docker-debug:: ## Enter the docker container to debug
+	@docker run -it \
+	-v $(WORKING_DIR):/$(DOCKER_DIR) \
+	--user "$(id -u):$(id -g)" \
+	-w /$(DOCKER_DIR) $(IMAGE_TAG)
 
 build-full: docker-build build ## Setup the docker image and build the firmware
 
