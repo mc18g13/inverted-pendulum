@@ -2,6 +2,7 @@
 #include "pico/stdlib.h"
 #include "hardware/i2c.h"
 #include "hardware/gpio.h"
+#include "motor_driver.h"
 
 #define I2C_PORT i2c0
  
@@ -65,24 +66,12 @@ void gpio_event_string(char *buf, uint32_t events) {
 #define ENCODER_INPUT_A 27
 #define ENCODER_INPUT_B 26
 
-#define CLOCKWISE 6
-#define ANTI_CLOCKWISE 7
-#define SPEED 8
-
-#include "motor_driver.h"
 
 int main() {
     stdio_init_all();
-    doing();
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
-
-    gpio_init(CLOCKWISE);
-    gpio_init(ANTI_CLOCKWISE);
-    gpio_init(SPEED);
-    gpio_set_dir(CLOCKWISE, GPIO_OUT);
-    gpio_set_dir(ANTI_CLOCKWISE, GPIO_OUT);
-    gpio_set_dir(SPEED, GPIO_OUT);
+    setup_motor_driver();
 
     gpio_init(ENCODER_INPUT_A);
     gpio_init(ENCODER_INPUT_B);
@@ -103,22 +92,10 @@ int main() {
         triggered = false;
       }
       printf("triggered %d \n", triggered);
-      // printf("input pin %d \n", gpio_get(ENCODER_INPUT_A));
-      // read_raw(&angle);
-      // gpio_put(LED_PIN, !gpio_get(LED_PIN));
-      // printf("angle = %d\n", angle);
-      gpio_put(SPEED, 1);
-      gpio_put(ANTI_CLOCKWISE, 1);
-      gpio_put(CLOCKWISE, 0);
-      // if (output > 0) {
-      //   gpio_put(SPEED, 1);
-      //   gpio_put(ANTI_CLOCKWISE, 1);
-      //   gpio_put(CLOCKWISE, 1);
-      // } else {
-      //   gpio_put(SPEED, 1);
-      //   gpio_put(CLOCKWISE, 1);
-      //   gpio_put(ANTI_CLOCKWISE, 1);
-      // }
+      read_raw(&angle);
+      gpio_put(LED_PIN, !gpio_get(LED_PIN));
+      printf("angle = %d\n", angle);
+      run_motors_clockwise();
 
       sleep_ms(10);
     }
