@@ -20,11 +20,13 @@ add_executable(rotary_inverted_pendulum
   main.c
   lib/motor_driver/motor_driver.c
   lib/arm_encoder/arm_encoder.c
+  lib/motor_encoder/motor_encoder.c
 )
 
 target_include_directories(
   rotary_inverted_pendulum PRIVATE 
   lib/motor_driver 
+  lib/motor_encoder
   lib/arm_encoder)
 
 target_compile_options(
