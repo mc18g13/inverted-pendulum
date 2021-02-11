@@ -3,6 +3,7 @@
 #include "hardware/gpio.h"
 #include "motor_driver.h"
 #include "motor_encoder.h"
+#include "arm_encoder.h"
 
 #define LED_PIN 25
 void setup_on_board_led() {
@@ -22,13 +23,16 @@ int main() {
     setup_arm_encoder();
     toggle_on_board_led();
 
-    uint16_t angle;
+    calibrate_arm_encoder();
+
+    float angle;
     while (1) {
-      printf("triggered %d \n", get_trigger_count());
-      angle = read_raw();
-      printf("angle = %d\n", angle);
-      run_motors_clockwise();
-      sleep_ms(10);
+      // printf("triggered %d \n", get_trigger_count());
+      angle = get_arm_encoder_angle();
+      // printf("angle = %f\n", angle);
+      // run_motors_clockwise();
+      sleep_ms(100);
+      // print_gpio_order();
     }
 
     return 0;

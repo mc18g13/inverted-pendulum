@@ -35,6 +35,8 @@ docker-debug:: ## Enter the docker container to debug
 
 build-full: docker-build build ## Setup the docker image and build the firmware
 
+bu: build upload
+
 upload:
 	./scripts/upload.sh
 
