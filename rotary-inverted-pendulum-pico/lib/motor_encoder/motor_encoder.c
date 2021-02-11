@@ -67,5 +67,4 @@ void calculate_direction(uint gpio, uint32_t events) {
   }
 
   found_direction = true;
-
 }
