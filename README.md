@@ -19,6 +19,7 @@ A learning aid for control system design. A rotary inverted pendulum designed wi
 * 2 * M3 bolts (pendulum arm mount)
 * 2 * M2.5 bolts (motor mount)
 * 2 * M4 bolts and nuts (box body mount)
+* 3mm flange motor coupling (22mm diameter with 4 M3 bolts)
 * Male to Female and Female to Female Jumper wires
 
 # Pico Firmware
