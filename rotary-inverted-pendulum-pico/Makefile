@@ -6,6 +6,9 @@ IMAGE_TAG = $(IMAGE_USER)/$(IMAGE_NAME):$(IMAGE_VERSION)
 WORKING_DIR := $(shell pwd)
 DOCKER_DIR :=$(IMAGE_NAME)
 
+UID = $(shell id -u)
+GID = $(shell id -g)
+
 .DEFAULT_GOAL := build-full
 
 check-docker:: ## Target to check if docker is installed
@@ -14,24 +17,27 @@ check-docker:: ## Target to check if docker is installed
 docker-build:: check-docker ## Build the docker image
 	@echo Building $(IMAGE_TAG)
 	@docker build \
-		-t $(IMAGE_TAG) $(WORKING_DIR)
+		-t $(IMAGE_TAG) $(WORKING_DIR) \
+		--build-arg USER=${USER} \
+		--build-arg HOME=${HOME} \
+		--build-arg UID=${UID} \
+		--build-arg GID=${GID}
 
 docker-push:: check-docker ## push the docker image
 	@echo Pushing $(IMAGE_TAG)
 	@docker push $(IMAGE_TAG)
 
-build:: ## Build the firmare
-	@docker run -t \
+DOCKER_BUILD_COMMAND = 	@docker run -t \
 	-v $(WORKING_DIR):/$(DOCKER_DIR) \
-	--user "$(id -u):$(id -g)" \
+	--user "${UID}:${GID}" \
 	-w /$(DOCKER_DIR) $(IMAGE_TAG) bash -C \
 	./scripts/build.sh --color=auto
 
+build:: ## Build the firmare
+	${DOCKER_BUILD_COMMAND}
+
 docker-debug:: ## Enter the docker container to debug
-	@docker run -it \
-	-v $(WORKING_DIR):/$(DOCKER_DIR) \
-	--user "$(id -u):$(id -g)" \
-	-w /$(DOCKER_DIR) $(IMAGE_TAG)
+	@echo ${DOCKER_BUILD_COMMAND}
 
 build-full: docker-build build ## Setup the docker image and build the firmware
 
