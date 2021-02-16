@@ -59,6 +59,7 @@ bool arm_is_at_rest() {
 
 void calibrate_arm_encoder() {
   while (!arm_is_at_rest()) {
+    printf("waiting for arm to be at rest");
     sleep_ms(1000);
   };
 

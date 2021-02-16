@@ -1,6 +1,6 @@
 #include "motor_encoder.h"
+#include "stdio.h"
 #include "hardware/gpio.h"
-#include <stdio.h>
 
 #define pulse_count_revolution 48.0f
 #define gear_ratio 11.7f
@@ -10,7 +10,7 @@
 #define ENCODER_INPUT_B 26
 
 static uint triggered_gpio = 0;
-static uint trigger_count = 0;
+static uint displacement_count_from_start = 0;
 static int direction = 0;
 bool found_direction = false;
 
@@ -24,29 +24,26 @@ void setup_motor_encoder(void) {
   gpio_set_irq_enabled_with_callback(ENCODER_INPUT_B, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
 }
 
-int get_trigger_count(void) {
-  return trigger_count;
+int get_motor_displacement_count_from_start(void) {
+  return displacement_count_from_start;
 }
 
 static void gpio_callback(uint gpio, uint32_t events) {
-  if (found_direction) {
+  if (!found_direction) {
     calculate_direction(gpio, events);
   }
 
   if (direction == 0) {
-    printf("ERROR DIRECTION NOT SET");
+    printf("ERROR DIRECTION NOT SET\n");
   }
 
   if (triggered_gpio == gpio) {
-    printf("Changed direction\n");
+    direction = -direction;
+    // printf("Changed direction\n");
   }
 
   if (ENCODER_INPUT_A == gpio || ENCODER_INPUT_B == gpio) {
-    if (triggered_gpio == gpio) {
-      trigger_count = trigger_count + direction;
-    } else {
-      trigger_count = trigger_count - direction;
-    }
+    displacement_count_from_start = displacement_count_from_start + direction;
   }
 
   triggered_gpio = gpio;
@@ -63,6 +60,11 @@ void calculate_direction(uint gpio, uint32_t events) {
   }
 
   if (events & GPIO_IRQ_EDGE_RISE) {
+    if (gpio == ENCODER_INPUT_A) {
+      direction = 1;
+    } else {
+      direction = -1;
+    }
     events &= ~GPIO_IRQ_EDGE_RISE;
   }
 

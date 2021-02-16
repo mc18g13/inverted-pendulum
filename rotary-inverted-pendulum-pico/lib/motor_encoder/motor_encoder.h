@@ -6,6 +6,6 @@
 void print_gpio_order(void);
 
 void setup_motor_encoder(void);
-int get_trigger_count(void);
+int get_motor_displacement_count_from_start(void);
 
 #endif
