@@ -71,14 +71,14 @@ void calibrate_arm_encoder() {
 
 
 float get_arm_encoder_angle(void) {
-  uint16_t encoder = get_encoder_value();
+  int16_t encoder = (int16_t)get_encoder_value();
   encoder = encoder - encoder_zero_offset;
 
   // account for 16 bit overflow
   encoder %= BIT_MAX_12;
 
   float angle_out_of_2PI = (float)encoder * 2 * M_PI / (float)BIT_MAX_12;
-  return angle_out_of_2PI > M_PI ? angle_out_of_2PI - (M_PI * 2) : angle_out_of_2PI;
+  return  -(angle_out_of_2PI > M_PI ? angle_out_of_2PI - (M_PI * 2) : angle_out_of_2PI);
 }
 
 void setup_arm_encoder(void) {

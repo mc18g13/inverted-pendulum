@@ -1,16 +1,18 @@
 #include "motor_encoder.h"
 #include "stdio.h"
 #include "hardware/gpio.h"
+#include "math.h"
 
 #define pulse_count_revolution 48.0f
 #define gear_ratio 11.7f
-#define pulse_count_for_geared_turn pulse_count_revolution * gear_ratio
-
 #define ENCODER_INPUT_A 27
 #define ENCODER_INPUT_B 26
 
+#define PULSE_COUNT_FOR_GEARED_TURN ((pulse_count_revolution) * (gear_ratio))
+#define PULSES_TO_RADS ((2.0f) * (M_PI) / PULSE_COUNT_FOR_GEARED_TURN)
+
 static uint triggered_gpio = 0;
-static uint displacement_count_from_start = 0;
+static int displacement_count_from_start = 0;
 static int direction = 0;
 bool found_direction = false;
 
@@ -24,8 +26,8 @@ void setup_motor_encoder(void) {
   gpio_set_irq_enabled_with_callback(ENCODER_INPUT_B, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &gpio_callback);
 }
 
-int get_motor_displacement_count_from_start(void) {
-  return displacement_count_from_start;
+float get_motor_displacement_radians(void) {
+  return -displacement_count_from_start * PULSES_TO_RADS;
 }
 
 static void gpio_callback(uint gpio, uint32_t events) {
