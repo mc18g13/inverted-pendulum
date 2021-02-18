@@ -14,9 +14,12 @@ init_printing(use_unicode=True)
 
 # q1 angular arm displacement
 # q2 angular pendulum displacement
+# l1 arm length
+# l2 pendulum length to COM
 
-q1, q2 = dynamicsymbols('q1 q2')
-q1d, q2d = dynamicsymbols('q1 q2', 1)
+
+q1, q2 = dynamicsymbols('q1 q2') # angle of arm, angle of pendulum
+q1d, q2d = dynamicsymbols('q1 q2', 1) # rate of change or arm, rate of change of pendulum
 q1d2, q2d2 = dynamicsymbols('q1 q2', 2)
 l1, l2, m1, m2, g, K, R, V = symbols('l1, l2, m1, m2, g, K, R, V')
 
@@ -37,7 +40,7 @@ kinetic_energy_for_pendulum = (
   )
 )
 
-potential_energy_for_system = m2 * g * half * l2 * cos(q2)
+potential_energy_for_system = m2 * g * half * l2 * cos(q2) # this just acts on the com of the pendulum
 
 L = kinetic_energy_for_arm + kinetic_energy_for_pendulum - potential_energy_for_system
 
