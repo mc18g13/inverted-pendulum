@@ -27,7 +27,7 @@ void setup_motor_encoder(void) {
 }
 
 float get_motor_displacement_radians(void) {
-  return -displacement_count_from_start * PULSES_TO_RADS;
+  return -(float)displacement_count_from_start * PULSES_TO_RADS;
 }
 
 static void gpio_callback(uint gpio, uint32_t events) {
@@ -41,7 +41,6 @@ static void gpio_callback(uint gpio, uint32_t events) {
 
   if (triggered_gpio == gpio) {
     direction = -direction;
-    // printf("Changed direction\n");
   }
 
   if (ENCODER_INPUT_A == gpio || ENCODER_INPUT_B == gpio) {

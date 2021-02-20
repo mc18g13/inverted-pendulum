@@ -11,7 +11,8 @@
 
 const float32_t K_f32[4] = 
 {
--31.623,  1018.061,    -23.925,     11.273
+// -31.623,  300.061,    -23.925,     11.273
+-10.0000,   108.3142,   -3.9802,    1.9517
 };
 
 float32_t input_U_f32[4];
@@ -54,8 +55,6 @@ int main() {
     absolute_time_t current_time_us = get_absolute_time();
     absolute_time_t delta_time_us;
 
-
-
     while (1) {
       current_time_us = get_absolute_time();
       delta_time_us = current_time_us - previous_time_us;
@@ -76,11 +75,10 @@ int main() {
         // printf("current_motor_speed %f\n", current_pendulum_angle);
         // printf("current_pendulum_speed %f\n", current_pendulum_speed);
         float32_t output = K_f32[0] * current_motor_angle + K_f32[1] * current_pendulum_angle + K_f32[2] * current_motor_speed + K_f32[3] * current_pendulum_speed; 
-        uint deadband_to_move_motor = 20;
-        uint output_absolute = (uint)fabs(output) + deadband_to_move_motor;
+        uint output_absolute = (uint)fabs(output);
         // output_absolute = (output_absolute * output_absolute);
         // printf("output_absolute %d \n", output_absolute);
-        printf("%f %f %f %f %f %f\n",time_s ,current_motor_angle , current_pendulum_angle, current_motor_speed, current_pendulum_speed, output);
+        // printf("%f %f %f %f %f %f\n",time_s ,current_motor_angle , current_pendulum_angle, current_motor_speed, current_pendulum_speed, output);
 
         if (output > 0) {
           run_motor(CLOCKWISE, output_absolute);
