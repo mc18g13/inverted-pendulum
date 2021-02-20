@@ -51,7 +51,7 @@ void stop_motor(void) {
 void set_motor_speed(uint speed) {
 
   if (speed > MAX_MOTOR_SPEED) {
-    printf("motor speed exceeding max\n");
+    // printf("motor speed exceeding max\n");
     speed = MAX_MOTOR_SPEED;
   }
 

@@ -25,7 +25,7 @@ C = eye(4, 4);
 D = 0;
 
 % LQR
-Q = diag([1 100 0 10]);
+Q = diag([1 1000 0 0]);
 R = 0.001;
 [K, S, EIG] = lqr(A, B, Q, R);
 display(K);
